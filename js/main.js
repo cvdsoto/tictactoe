@@ -1,6 +1,15 @@
-const row1 = ["_","_","_"];
-const row2 = ["_","_","_"];
-const row3 = ["_","_","_"];
+const grid = ["_","_","_","_","_","_","_","_","_"];
+let indices = [];
+const winningCombo = {
+  row1: [0, 1, 2],
+  row2: [3, 4, 5],
+  row3: [6, 7, 8],
+  col1: [0, 3, 6],
+  col2: [1, 4, 7],
+  col3: [2, 5, 8],
+  diagonal1: [0, 4, 8],
+  diagonal2: [2, 4, 6],
+}
 
 $(document).ready(function(){
   const $box1 = $('#box-1');
@@ -16,13 +25,35 @@ $(document).ready(function(){
   let turn = 'X'; // initial turn
 
   const checkWin = function(){
-      
+    let idx = grid.indexOf(turn);
+    while(idx != -1){
+      indices.push(idx);
+      idx = grid.indexOf(turn, idx + 1);
+    }
+    // console.log(turn, indices);
+    if (indices.length === 3){
+      const row1 = winningCombo.row1.join();
+      const row2 = winningCombo.row2.join();
+      const row3 = winningCombo.row3.join();
+      const col1 = winningCombo.col1.join();
+      const col2 = winningCombo.col2.join();
+      const col3 = winningCombo.col3.join();
+      const diagonal1 = winningCombo.diagonal1.join();
+      const diagonal2 = winningCombo.diagonal2.join();
+      const str2 = indices.join();
+      // console.log(row1, row2, row3, col1, col2, col3, diagonal1, diagonal2);
+      if(row1 === str2 || row2 === str2 || row3 === str2 || col1 === str2 || col2 === str2 || col3 === str2 || diagonal1 === str2 ||diagonal2 === str2 ){
+        console.log('you win!');
+      }
+    }
+    indices = [];
   };
 
-  const makeTurn = function(array, num, letter, box){
-    if (array[num] === '_' || array[num] === letter){
-      array[num] = letter;
+  const makeTurn = function(num, letter, box){
+    if (grid[num] === '_' || array[num] === letter){
+      grid[num] = letter;
       box.html(letter);
+        checkWin();
       if (turn === 'X'){
         turn = 'O';
       }else {
@@ -31,31 +62,10 @@ $(document).ready(function(){
     }
   };
 
-  const getArrayIndex = function(box){
-    let number = 0;
-      if(box === '1' || box === '4' || box === '7'){
-        number = 0;
-        return number;
-      }else if(box === '2'|| box === '5' || box === '8'){
-        number = 1;
-        return number;
-      }else if(box === '3'|| box === '6' || box === '9'){
-        number = 2;
-        return number;
-      }
-  };
-
   const getBox = function(event){
-    const boxNo = (event.data.box).attr('id').slice(-1); // get box number
-    const arrayNum = getArrayIndex(boxNo);
-    if (boxNo === '1' || boxNo === '2' || boxNo === '3'){
-      makeTurn(row1, arrayNum, turn, event.data.box);
-    } else if (boxNo === '4' || boxNo === '5' || boxNo === '6'){
-      makeTurn(row2, arrayNum, turn, event.data.box);
-    } else {
-      makeTurn(row3, arrayNum, turn, event.data.box);
-    }
-    };
+    const arrayNum = ((event.data.box).attr('id').slice(-1)) - 1; // get array number
+    makeTurn(arrayNum, turn, event.data.box);
+  };
 
   $box1.on('click', { box: $box1}, getBox);
   $box2.on('click', { box: $box2}, getBox);
