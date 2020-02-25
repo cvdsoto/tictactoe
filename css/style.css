@@ -3,8 +3,27 @@
   padding: 0;
   box-sizing: border-box;
 }
+body{
+  background-color: #67DADD;
+}
+header h1{
+  background-color: #217b7c;
+  /* box-shadow: 0 2px #ccc; */
+  text-align: center;
+  padding: 10px;
+}
+#container {
+  width: 600px;
+  margin: auto;
+  background-color: white;
+  margin-top: 20px;
+}
+div.row{
+  display: flex;
+  justify-content: center;
+}
 div.boxes {
-  display: inline-block;
+  /* display: inline-block; */
   border: 1px solid black;
   padding: 50px;
 }
