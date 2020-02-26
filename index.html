@@ -11,22 +11,47 @@
 </head>
 <body>
   <header><h1>Tic-Tac-Toe!</h1></header>
-  <div id="container">
-    <div class="row">
-    <div class="boxes" id="box-1"></div>
-    <div class="boxes" id="box-2"></div>
-    <div class="boxes" id="box-3"></div>
-    </div>
-    <div class="row">
-    <div class="boxes" id="box-4"></div>
-    <div class="boxes" id="box-5"></div>
-    <div class="boxes" id="box-6"></div>
-    </div>
-    <div class="row">
-    <div class="boxes" id="box-7"></div>
-    <div class="boxes" id="box-8"></div>
-    <div class="boxes" id="box-9"></div>
-    </div>
+  <div id="wrapper">
+    <aside id="player-1">
+      <h3>Player 1</h3>
+      <p>Choose a marker</p>
+      <img class = "marker" id="icon-1" src="img/Irene.png" alt="Irene">
+      <img class = "marker" id="icon-2" src="img/Joy.png" alt="Joy">
+      <img class = "marker" id="icon-3" src="img/Seulgi.png" alt="Seulgi">
+      <img class = "marker" id="icon-4" src="img/Wendy.png" alt="Wendy">
+      <img class = "marker" id="icon-5" src="img/Yeri.png" alt="Yeri">
+      <h3>Score</h3><p class="score" id="player1-score">0</p>
+    </aside>
+    <main id="container">
+      <div class="row">
+        <div class="boxes" id="box-1"></div>
+        <div class="boxes" id="box-2"></div>
+        <div class="boxes" id="box-3"></div>
+      </div>
+      <div class="row">
+        <div class="boxes" id="box-4"></div>
+        <div class="boxes" id="box-5"></div>
+        <div class="boxes" id="box-6"></div>
+      </div>
+      <div class="row">
+        <div class="boxes" id="box-7"></div>
+        <div class="boxes" id="box-8"></div>
+        <div class="boxes" id="box-9"></div>
+      </div>
+      <div class="row">
+        <button type="button" id="reset">Start Over</button>
+      </div>
+    </main>
+    <aside id="player-2">
+      <h3>Player 2</h3>
+      <p>Choose a marker</p>
+      <img class = "marker" id="icon-6" src="img/Irene.png" alt="Irene">
+      <img class = "marker" id="icon-7" src="img/Joy.png" alt="Joy">
+      <img class = "marker" id="icon-8" src="img/Seulgi.png" alt="Seulgi">
+      <img class = "marker" id="icon-9" src="img/Wendy.png" alt="Wendy">
+      <img class = "marker" id="icon-10" src="img/Yeri.png" alt="Yeri">
+      <h3>Score</h3><p class="score" id="player2-score">0</p>
+    </aside>
   </div>
 </body>
 </html>

@@ -1,29 +1,72 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Vibur&display=swap');
 *{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 body{
-  background-color: #67DADD;
+  background-color: #c3e2ff;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px;
+}
+h1, h3, button, .score {
+  font-family: 'Vibur', cursive;
+  text-align: center;
+}
+h3, .score{
+  font-size: 30px;
 }
 header h1{
-  background-color: #217b7c;
-  /* box-shadow: 0 2px #ccc; */
   text-align: center;
   padding: 10px;
+  font-size: 60px;
+  color: #FCEC3C;
+  text-shadow: 2px 2px #2771B6;
+}
+#wrapper {
+  display: flex;
+  /* max-width: 960px; */
+  margin: 20px auto;
+}
+aside{
+  width: 300px;
+  border: 10px solid #c9ade2;
+  flex-grow: 1;
+  border-radius: 20px;
+  box-shadow: 5px 5px #fee976;
+  /* margin-left: 10px; */
+}
+aside h3, aside p, aside img {
+  margin-left: 15px;
+  margin-top: 5px;
+}
+.marker:hover{
+  border: 3px solid #608eba;
+  border-radius: 5px;
 }
 #container {
-  width: 600px;
-  margin: auto;
-  background-color: white;
-  margin-top: 20px;
+   width: 300px;
+   flex-grow: 2;
 }
 div.row{
   display: flex;
   justify-content: center;
 }
 div.boxes {
-  /* display: inline-block; */
   border: 1px solid black;
-  padding: 50px;
+  width: 100px;
+  height: 100px;
+}
+#reset{
+  padding: 12px 28px;
+  background-color: transparent;
+  margin-top: 20px;
+  font-family: 'Vibur', cursive;
+  font-size: 40px;
+  color: #ffcaaf;
+  text-shadow: 2px 2px #2771B6;
+  border: none;
+}
+#reset:hover{
+  color: #c4eb52;
 }

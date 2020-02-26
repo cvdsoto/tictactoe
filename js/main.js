@@ -12,6 +12,40 @@ const winningCombo = [
 ];
 
 $(document).ready(function(){
+
+  let player1Src = ' ', player1Alt, player2Src = ' ', player2Alt;
+  let getImageId, getImageSrc, getImageAlt;
+
+  $('.marker').click(function(){
+    getImageSrc = $(this).attr('src');
+    getImageId = $(this).attr('id');
+    getImageAlt = $(this).attr('alt');
+    if (getImageId === 'icon-1' ||
+        getImageId === 'icon-2' ||
+        getImageId === 'icon-3' ||
+        getImageId === 'icon-4' ||
+        getImageId === 'icon-5') {
+          player1Src = getImageSrc;
+          player1Alt = getImageAlt;
+    }else {
+      player2Src = getImageSrc;
+      player2Alt = getImageAlt;
+    }
+    if (player1Src === ' ' && player2Src === ' '){
+      $('.boxes').off('click');
+    } else {
+      $box1.on('click', { box: $box1}, getBox);
+      $box2.on('click', { box: $box2}, getBox);
+      $box3.on('click', { box: $box3}, getBox);
+      $box4.on('click', { box: $box4}, getBox);
+      $box5.on('click', { box: $box5}, getBox);
+      $box6.on('click', { box: $box6}, getBox);
+      $box7.on('click', { box: $box7}, getBox);
+      $box8.on('click', { box: $box8}, getBox);
+      $box9.on('click', { box: $box9}, getBox);
+    }
+  });
+
   const $box1 = $('#box-1');
   const $box2 = $('#box-2');
   const $box3 = $('#box-3');
@@ -23,7 +57,7 @@ $(document).ready(function(){
   const $box9 = $('#box-9');
 
   let turn = 'X'; // initial turn
-
+  let winner = {};
   const checkWin = function(){
     let idx = grid.indexOf(turn);
     while(idx != -1){
@@ -39,7 +73,14 @@ $(document).ready(function(){
         let winningComboString = element.join();
         if (indicesString === winningComboString){
           hasWon = true;
-          return hasWon;
+          if (turn === 'X'){
+            winner.player = player1Alt;
+          }else {
+            winner.player = player2Alt;
+          }
+          winner.hasWon = hasWon;
+          return winner;
+          // return hasWon;
         }
       });
     } else if (indices.length > 3){
@@ -49,21 +90,36 @@ $(document).ready(function(){
         // console.log(winningComboString);
         if (winningComboString.test(indicesString)){
           hasWon = true;
-          return hasWon;
+          if (turn === 'X'){
+            winner.player = player1Alt;
+          }else {
+            winner.player = player2Alt;
+          }
+          winner.hasWon = hasWon;
+          return winner;
+          // return hasWon;
         }
       });
     }
     indices = [];
-    return hasWon;
+    winner.hasWon = hasWon;
+    return winner;
+    // return hasWon;
   };
 
   const makeTurn = function(num, letter, box){
     if (grid[num] === '_' || grid[num] === letter){
       grid[num] = letter;
-      box.html(letter);
+      if (letter === 'X') {
+        box.html(`<img src=${player1Src}>`);
+      }
+      else {
+        box.html(`<img src=${player2Src}>`);
+      }
       const wonGame = checkWin();
-      if (wonGame){
-        console.log(`letter ${letter} wins!!`);
+      console.log(wonGame);
+      if (wonGame.hasWon){
+        console.log(`${wonGame.player} wins!!`);
         $box1.off('click');
         $box2.off('click');
         $box3.off('click');
@@ -87,17 +143,6 @@ $(document).ready(function(){
     const arrayNum = ((event.data.box).attr('id').slice(-1)) - 1; // get array number
     makeTurn(arrayNum, turn, event.data.box);
   };
-
-  $box1.on('click', { box: $box1}, getBox);
-  $box2.on('click', { box: $box2}, getBox);
-  $box3.on('click', { box: $box3}, getBox);
-  $box4.on('click', { box: $box4}, getBox);
-  $box5.on('click', { box: $box5}, getBox);
-  $box6.on('click', { box: $box6}, getBox);
-  $box7.on('click', { box: $box7}, getBox);
-  $box8.on('click', { box: $box8}, getBox);
-  $box9.on('click', { box: $box9}, getBox);
-
 
 });
 // start: original code! do not delete!!!
