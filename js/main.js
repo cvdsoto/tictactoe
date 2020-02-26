@@ -1,4 +1,4 @@
-const grid = ["_","_","_","_","_","_","_","_","_"];
+let grid = ["_","_","_","_","_","_","_","_","_"];
 let indices = [];
 const winningCombo = [
   [1, 2, 3],
@@ -21,6 +21,7 @@ $(document).ready(function(){
     getImageSrc = $(this).attr('src');
     getImageId = $(this).attr('id');
     getImageAlt = $(this).attr('alt');
+    $imgMarker = $(this);
     if (getImageId === 'icon-1' ||
         getImageId === 'icon-2' ||
         getImageId === 'icon-3' ||
@@ -28,24 +29,27 @@ $(document).ready(function(){
         getImageId === 'icon-5') {
           player1Src = getImageSrc;
           player1Alt = getImageAlt;
+          $imgMarker.addClass('marker-selected');
     }else {
       player2Src = getImageSrc;
       player2Alt = getImageAlt;
+      $imgMarker.addClass('marker-selected');
     }
   });
 
-  const $box1 = $('#box-1');
-  const $box2 = $('#box-2');
-  const $box3 = $('#box-3');
-  const $box4 = $('#box-4');
-  const $box5 = $('#box-5');
-  const $box6 = $('#box-6');
-  const $box7 = $('#box-7');
-  const $box8 = $('#box-8');
-  const $box9 = $('#box-9');
+  // const $box1 = $('#box-1');
+  // const $box2 = $('#box-2');
+  // const $box3 = $('#box-3');
+  // const $box4 = $('#box-4');
+  // const $box5 = $('#box-5');
+  // const $box6 = $('#box-6');
+  // const $box7 = $('#box-7');
+  // const $box8 = $('#box-8');
+  // const $box9 = $('#box-9');
 
   let turn = 'X'; // initial turn
   let winner = {};
+
   const checkWin = function(){
     let idx = grid.indexOf(turn);
     while(idx != -1){
@@ -53,7 +57,7 @@ $(document).ready(function(){
       idx = grid.indexOf(turn, idx + 1);
     }
     let hasWon = false;
-    let number = 0;
+    // let number = 0;
     // console.log(turn, indices);
     if (indices.length === 3){
       const indicesString = indices.join();
@@ -78,6 +82,7 @@ $(document).ready(function(){
   };
 
   let player = ' ';
+  let tilesPlayed = 0;
   const makeTurn = function(num, letter, box){
     if (grid[num] === '_' || grid[num] === letter){
       grid[num] = letter;
@@ -88,7 +93,8 @@ $(document).ready(function(){
         box.html(`<img src=${player2Src}>`);
       }
       const wonGame = checkWin();
-      console.log(wonGame);
+      tilesPlayed += 1;
+      console.log(tilesPlayed,wonGame);
       if (wonGame){
         if (turn === 'X'){
           player = player1Alt;
@@ -104,7 +110,9 @@ $(document).ready(function(){
           $('#player-2 p#player2-score').text(score2);
         }
         $('.boxes').off('click');
-
+      }else if (tilesPlayed === 9 && !wonGame){
+        $('#player-1 h3#title1').text(`Nobody wins!!`);
+        $('#player-2 h3#title2').text(`Nobody wins!!`);
       }else {
         if (turn === 'X'){
           turn = 'O';
@@ -112,24 +120,38 @@ $(document).ready(function(){
           turn = 'X';
         }
       }
-    }
+      }
   };
 
-  const getBox = function(event){
-    const arrayNum = ((event.data.box).attr('id').slice(-1)) - 1; // get array number
-    makeTurn(arrayNum, turn, event.data.box);
-  };
+  $('.boxes').on('click',function(event){
+    $box = $(this);
+    const arrayNum = ($box.attr('id').slice(-1)) - 1; // get array number
+    makeTurn(arrayNum, turn, $box);
+  });
+  // const getBox = function(event){
+  //   const arrayNum = ((event.data.box).attr('id').slice(-1)) - 1; // get array number
+  //   makeTurn(arrayNum, turn, event.data.box);
+  // };
+  //
+  //   $box1.on('click', { box: $box1}, getBox);
+  //   $box2.on('click', { box: $box2}, getBox);
+  //   $box3.on('click', { box: $box3}, getBox);
+  //   $box4.on('click', { box: $box4}, getBox);
+  //   $box5.on('click', { box: $box5}, getBox);
+  //   $box6.on('click', { box: $box6}, getBox);
+  //   $box7.on('click', { box: $box7}, getBox);
+  //   $box8.on('click', { box: $box8}, getBox);
+  //   $box9.on('click', { box: $box9}, getBox);
 
-    $box1.on('click', { box: $box1}, getBox);
-    $box2.on('click', { box: $box2}, getBox);
-    $box3.on('click', { box: $box3}, getBox);
-    $box4.on('click', { box: $box4}, getBox);
-    $box5.on('click', { box: $box5}, getBox);
-    $box6.on('click', { box: $box6}, getBox);
-    $box7.on('click', { box: $box7}, getBox);
-    $box8.on('click', { box: $box8}, getBox);
-    $box9.on('click', { box: $box9}, getBox);
 
+    $('#reset').on('click', function(){
+      $('.boxes img').remove();
+      turn = 'X';
+      grid = ["_","_","_","_","_","_","_","_","_"];
+      $('#player-1 h3#title1').text("Player 1");
+      $('#player-2 h3#title2').text("Player 2");
+      $('.boxes').on('click');
+    });
 });
 // start: original code! do not delete!!!
 // const row1 = winningCombo.row1.join();
