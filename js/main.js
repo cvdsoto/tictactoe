@@ -1,14 +1,14 @@
 let grid = ["_","_","_","_","_","_","_","_","_"];
 let indices = [];
 const winningCombo = [
-  [1, 2, 3],
-  [4, 5, 6],
-  [7, 8, 9],
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
   [1, 4, 7],
   [2, 5, 8],
-  [3, 6, 9],
-  [1, 5, 9],
-  [3, 5, 7]
+  [2, 4, 6],
+  [0, 4, 8]
 ];
 
 $(document).ready(function(){
@@ -51,34 +51,45 @@ $(document).ready(function(){
   let winner = {};
 
   const checkWin = function(){
-    let idx = grid.indexOf(turn);
-    while(idx != -1){
-      indices.push(idx + 1);
-      idx = grid.indexOf(turn, idx + 1);
+    let a, b, c;
+    for (let i = 0; i < winningCombo.length; i++) {
+      a = winningCombo[i][0];
+      b = winningCombo[i][1];
+      c = winningCombo[i][2];
+      console.log(turn);
+      if (grid[a] === turn && grid[b] === turn && grid[c] === turn){
+        hasWon = true;
+        return hasWon;
+      }
     }
-    let hasWon = false;
-    // let number = 0;
-    // console.log(turn, indices);
-    if (indices.length === 3){
-      const indicesString = indices.join();
-      winningCombo.forEach(function(element){
-        let winningComboString = element.join();
-        if (indicesString === winningComboString){
-          hasWon = true;
-        }
-      });
-    } else if (indices.length > 3){
-      const indicesString = indices.join();
-      winningCombo.forEach(function(element){
-        let winningComboString = RegExp(`${element.join('.*')}`);
-        // console.log(winningComboString);
-        if (winningComboString.test(indicesString)){
-          hasWon = true;
-        }
-      });
-    }
-    indices = [];
-    return hasWon;
+    // let idx = grid.indexOf(turn);
+    // while(idx != -1){
+    //   indices.push(idx + 1);
+    //   idx = grid.indexOf(turn, idx + 1);
+    // }
+    // let hasWon = false;
+    // // let number = 0;
+    // // console.log(turn, indices);
+    // if (indices.length === 3){
+    //   const indicesString = indices.join();
+    //   winningCombo.forEach(function(element){
+    //     let winningComboString = element.join();
+    //     if (indicesString === winningComboString){
+    //       hasWon = true;
+    //     }
+    //   });
+    // } else if (indices.length > 3){
+    //   const indicesString = indices.join();
+    //   winningCombo.forEach(function(element){
+    //     let winningComboString = RegExp(`${element.join('.*')}`);
+    //     // console.log(winningComboString);
+    //     if (winningComboString.test(indicesString)){
+    //       hasWon = true;
+    //     }
+    //   });
+    // }
+    // indices = [];
+    // return hasWon;
   };
 
   let player = ' ';
@@ -94,7 +105,6 @@ $(document).ready(function(){
       }
       const wonGame = checkWin();
       tilesPlayed += 1;
-      console.log(tilesPlayed,wonGame);
       if (wonGame){
         if (turn === 'X'){
           player = player1Alt;
@@ -111,6 +121,8 @@ $(document).ready(function(){
         }
         $('.boxes').off('click');
       }else if (tilesPlayed === 9 && !wonGame){
+        $('#player-1 h3#title1').addClass("animated flash");
+        $('#player-2 h3#title2').addClass("animated flash");
         $('#player-1 h3#title1').text(`Nobody wins!!`);
         $('#player-2 h3#title2').text(`Nobody wins!!`);
       }else {
