@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Tic-Tac-Toe</title>
+  <link rel="stylesheet" href="css/animate.css">
   <link rel="stylesheet" href="css/style.css">
   <script src="js/jquery.js"></script>
   <script src="js/main.js"></script>
@@ -13,7 +14,7 @@
   <header><h1>Tic-Tac-Toe!</h1></header>
   <div id="wrapper">
     <aside id="player-1">
-      <h3>Player 1</h3>
+      <h3 id="title1">Player 1</h3>
       <p>Choose a marker</p>
       <img class = "marker" id="icon-1" src="img/Irene.png" alt="Irene">
       <img class = "marker" id="icon-2" src="img/Joy.png" alt="Joy">
@@ -39,11 +40,11 @@
         <div class="boxes" id="box-9"></div>
       </div>
       <div class="row">
-        <button type="button" id="reset">Start Over</button>
+        <button type="button" id="reset">Refresh Board</button>
       </div>
     </main>
     <aside id="player-2">
-      <h3>Player 2</h3>
+      <h3 id="title2">Player 2</h3>
       <p>Choose a marker</p>
       <img class = "marker" id="icon-6" src="img/Irene.png" alt="Irene">
       <img class = "marker" id="icon-7" src="img/Joy.png" alt="Joy">
