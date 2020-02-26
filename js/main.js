@@ -28,6 +28,7 @@ $(document).ready(function(){
       const $player2Image = $player2Markers.eq(i);
       if(player1Src === $player2Image.attr('src')){
         $player2Image.addClass('grayscale');
+        $player2Markers.off("click", $player2Image);
       }
     }
   });
@@ -145,7 +146,7 @@ $(document).ready(function(){
           $('#player-2 h3#title2').text(`${player} wins!!`);
           $('#player-2 p#player2-score').text(score2);
         }
-        $('.boxes').off('click');
+        $('.boxes').off('click', getBox);
       }else if (tilesPlayed === 9 && !wonGame){
         $('#player-1 h3#title1').addClass("animated flash");
         $('#player-2 h3#title2').addClass("animated flash");
@@ -161,11 +162,15 @@ $(document).ready(function(){
       }
   };
 
-  $('.boxes').on('click',function(event){
+
+  const getBox = function(){
     $box = $(this);
     const arrayNum = ($box.attr('id').slice(-1)) - 1; // get array number
     makeTurn(arrayNum, turn, $box);
-  });
+  }
+
+  $('.boxes').on('click', getBox);
+
   // const getBox = function(event){
   //   const arrayNum = ((event.data.box).attr('id').slice(-1)) - 1; // get array number
   //   makeTurn(arrayNum, turn, event.data.box);
@@ -186,22 +191,9 @@ $(document).ready(function(){
       $('.boxes img').remove();
       turn = 'X';
       grid = ["_","_","_","_","_","_","_","_","_"];
+      tilesPlayed = 0;
       $('#player-1 h3#title1').text("Player 1");
       $('#player-2 h3#title2').text("Player 2");
-      $('.boxes').on('click');
+      $('.boxes').on('click', getBox);
     });
 });
-// start: original code! do not delete!!!
-// const row1 = winningCombo.row1.join();
-// const row2 = winningCombo.row2.join();
-// const row3 = winningCombo.row3.join();
-// const col1 = winningCombo.col1.join();
-// const col2 = winningCombo.col2.join();
-// const col3 = winningCombo.col3.join();
-// const diagonal1 = winningCombo.diagonal1.join();
-// const diagonal2 = winningCombo.diagonal2.join();
-// const str2 = indices.join();
-// if(row1 === str2 || row2 === str2 || row3 === str2 || col1 === str2 || col2 === str2 || col3 === str2 || diagonal1 === str2 || diagonal2 === str2 ){
-//   console.log('you win!');
-// }
-// end: original code! do not delete!!!
