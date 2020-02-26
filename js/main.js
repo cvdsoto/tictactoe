@@ -17,25 +17,51 @@ $(document).ready(function(){
   let getImageId, getImageSrc, getImageAlt;
   let score1 = 0, score2 = 0;
 
-  $('.marker').click(function(){
-    getImageSrc = $(this).attr('src');
-    getImageId = $(this).attr('id');
-    getImageAlt = $(this).attr('alt');
-    $imgMarker = $(this);
-    if (getImageId === 'icon-1' ||
-        getImageId === 'icon-2' ||
-        getImageId === 'icon-3' ||
-        getImageId === 'icon-4' ||
-        getImageId === 'icon-5') {
-          player1Src = getImageSrc;
-          player1Alt = getImageAlt;
-          $imgMarker.addClass('marker-selected');
-    }else {
-      player2Src = getImageSrc;
-      player2Alt = getImageAlt;
-      $imgMarker.addClass('marker-selected');
+  $player1Markers = $('#player-1 .marker');
+  $player2Markers = $('#player-2 .marker');
+
+  $player1Markers.click(function(){
+    player1Src = $(this).attr('src');
+    player1Alt = $(this).attr('alt');
+    $(this).addClass('marker-selected');
+    for (let i = 0; i < $player2Markers.length; i++){
+      const $player2Image = $player2Markers.eq(i);
+      if(player1Src === $player2Image.attr('src')){
+        $player2Image.addClass('grayscale');
+      }
     }
   });
+
+  $player2Markers.click(function(){
+    player2Src = $(this).attr('src');
+    player2Alt = $(this).attr('alt');
+    $(this).addClass('marker-selected');
+    for (let i = 0; i < $player1Markers.length; i++){
+      const $player1Image = $player1Markers.eq(i);
+      if(player2Src === $player1Image.attr('src')){
+        $player1Image.addClass('grayscale');
+      }
+    }
+  });
+  // $('.marker').click(function(){
+  //   getImageSrc = $(this).attr('src');
+  //   getImageId = $(this).attr('id');
+  //   getImageAlt = $(this).attr('alt');
+  //   $imgMarker = $(this);
+  //   if (getImageId === 'icon-1' ||
+  //       getImageId === 'icon-2' ||
+  //       getImageId === 'icon-3' ||
+  //       getImageId === 'icon-4' ||
+  //       getImageId === 'icon-5') {
+  //         player1Src = getImageSrc;
+  //         player1Alt = getImageAlt;
+  //         $imgMarker.addClass('marker-selected');
+  //   }else {
+  //     player2Src = getImageSrc;
+  //     player2Alt = getImageAlt;
+  //     $imgMarker.addClass('marker-selected');
+  //   }
+  // });
 
   // const $box1 = $('#box-1');
   // const $box2 = $('#box-2');

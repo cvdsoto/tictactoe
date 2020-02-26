@@ -49,6 +49,9 @@ aside h3, aside p, aside img {
   border: 3px solid #608eba;
   border-radius: 5px;
 }
+.grayscale{
+  filter: grayscale(100%);
+}
 #container {
    width: 300px;
    flex-grow: 1;
