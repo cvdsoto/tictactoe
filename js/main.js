@@ -185,6 +185,8 @@ $(document).ready(function(){
         $h3Title1.text(`Nobody wins!!`);
         $h3Title2.text(`Nobody wins!!`);
         $asidePrompts.text('Thanks for playing!');
+        $player1.removeClass(`active-player-${player1Alt}`);
+        $player2.removeClass(`active-player-${player2Alt}`);
         //next turn
       }else {
         if (turn === 'X'){

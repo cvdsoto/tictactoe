@@ -6,10 +6,10 @@ This is our first project for our SEI course at GA. I made a Red Velvet-themed t
 This game was made by using HTML, CSS, and JavaScript (jQuery).
 
 ### Features
-- Players can choose their own tokens and will not allow another player when a token is already chosen.
+- Players can choose their own tokens and will not allow another player to choose a token that is already taken.
 - Displays a score counter so players can keep track of their wins (without refreshing the page).
 
-### How to Start the Game
+### How to Play the Game
 
 1. Players choose a token on their side to start the game.
 2. Click the "Start Game" button to determine who will go first (the one with the highlighted background).
@@ -19,6 +19,7 @@ This game was made by using HTML, CSS, and JavaScript (jQuery).
 
 ### Known Bugs
 - Clicking the "Start Button" while a game is ongoing will restart the players' turn.
+- When the game is a draw, the last player's background is still highlighted.
 
 ### Wish List
 - Use LocalStorage to allow games to continue after page refresh / loss of internet connectivity
