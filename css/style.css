@@ -4,6 +4,7 @@
   padding: 0;
   box-sizing: border-box;
 }
+/* font styles and main background color */
 body{
   background-color: #c3e2ff;
   font-family: 'Open Sans', sans-serif;
@@ -16,6 +17,7 @@ h1, h3, button, .score, #reset, #start{
 h3, .score{
   font-size: 30px;
 }
+/* header */
 header h1{
   text-align: center;
   padding: 10px;
@@ -23,19 +25,19 @@ header h1{
   color: #FCEC3C;
   text-shadow: 2px 2px #2771B6;
 }
+/* body */
 #wrapper {
   display: flex;
   max-width: 1200px;
   margin: 20px auto;
 }
+/* aside styling */
 aside{
   width: 300px;
   border: 10px solid #c9ade2;
   flex-grow: 1;
   border-radius: 20px;
-  /* box-shadow: 5px 5px #fee976; */
   box-shadow: 5px 5px black;
-  /* margin-left: 10px; */
 }
 aside h3, aside p, aside img {
   margin-left: 15px;
@@ -63,6 +65,7 @@ aside h3, aside p, aside img {
 .active-player-Yeri{
   background-color: #ac67c7;
 }
+/* main styling */
 #container {
    width: 300px;
    flex-grow: 1;
@@ -78,26 +81,24 @@ div.boxes {
   border-radius: 3px;
   justify-content: space-evenly;
 }
+/* buttons */
 div#buttons{
   text-align:center;
 }
 #reset, #start{
-  padding: 12px 28px;
+  padding: 10px 28px;
   background-color: transparent;
   margin-top: 20px;
   font-size: 30px;
   border: none;
   text-shadow: 2px 2px #2771B6;
 }
-#reset{
-  color: #ffcaaf;
+#reset, #start{
+  color: white;
 }
 #reset:hover{
-  color: #c9ade2;
-}
-#start{
-  color: #c4eb52;
+  color: #ffcaaf;
 }
 #start:hover{
-  color: #c9ade2;
+  color: #c4eb52;
 }
