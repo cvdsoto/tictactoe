@@ -13,37 +13,60 @@ const winningCombo = [
 
 $(document).ready(function(){
 
-  let player1Src = ' ', player1Alt, player2Src = ' ', player2Alt;
+  let player1Src, player1Alt, player2Src, player2Alt;
   let getImageId, getImageSrc, getImageAlt;
   let score1 = 0, score2 = 0;
+  let player1HasChosen = false, player2HasChosen = false;
+  let p1Icon, p2Icon;
 
   $player1Markers = $('#player-1 .marker');
   $player2Markers = $('#player-2 .marker');
 
   $player1Markers.click(function(){
     player1Src = $(this).attr('src');
-    player1Alt = $(this).attr('alt');
-    $(this).addClass('marker-selected');
-    for (let i = 0; i < $player2Markers.length; i++){
-      const $player2Image = $player2Markers.eq(i);
-      if(player1Src === $player2Image.attr('src')){
-        $player2Image.addClass('grayscale');
-        $player2Markers.off("click", $player2Image);
+    if (player2HasChosen && player2Src === player1Src){
+      $('#player-1 #prompts').text("Pick Another One!");
+      player1Src = ' ';
+    }else if (player1HasChosen && player2HasChosen){
+      $('aside #prompts').text("Game ongoing! You cannot choose another marker!");
+      player1Src = p1Icon;
+    }else {
+      p1Icon = player1Src;
+      player1Alt = $(this).attr('alt');
+      $(this).addClass('marker-selected');
+      for (let i = 0; i < $player2Markers.length; i++){
+        const $player2Image = $player2Markers.eq(i);
+        if(player1Src === $player2Image.attr('src')){
+          $player2Image.addClass('grayscale');
+          // $player2Image.off('click');
+        }
       }
+      player1HasChosen = true;
     }
   });
 
   $player2Markers.click(function(){
     player2Src = $(this).attr('src');
-    player2Alt = $(this).attr('alt');
-    $(this).addClass('marker-selected');
-    for (let i = 0; i < $player1Markers.length; i++){
-      const $player1Image = $player1Markers.eq(i);
-      if(player2Src === $player1Image.attr('src')){
-        $player1Image.addClass('grayscale');
+    if (player1HasChosen && player1Src === player2Src){
+      $('#player-2 #prompts').text("Pick Another One!");
+      player2Src = ' ';
+    }else if (player1HasChosen && player2HasChosen){
+      $('aside #prompts').text("Game ongoing! You cannot choose another marker!");
+      player2Src = p2Icon;
+    }else {
+      p2Icon = player2Src;
+      player2Alt = $(this).attr('alt');
+      $(this).addClass('marker-selected');
+      for (let i = 0; i < $player1Markers.length; i++){
+        const $player1Image = $player1Markers.eq(i);
+        if(player2Src === $player1Image.attr('src')){
+          $player1Image.addClass('grayscale');
+        }
       }
+      player2HasChosen = true;
     }
   });
+
   // $('.marker').click(function(){
   //   getImageSrc = $(this).attr('src');
   //   getImageId = $(this).attr('id');
@@ -83,7 +106,6 @@ $(document).ready(function(){
       a = winningCombo[i][0];
       b = winningCombo[i][1];
       c = winningCombo[i][2];
-      console.log(turn);
       if (grid[a] === turn && grid[b] === turn && grid[c] === turn){
         hasWon = true;
         return hasWon;
@@ -164,9 +186,21 @@ $(document).ready(function(){
 
 
   const getBox = function(){
-    $box = $(this);
-    const arrayNum = ($box.attr('id').slice(-1)) - 1; // get array number
-    makeTurn(arrayNum, turn, $box);
+    if (!player1HasChosen && !player2HasChosen){
+      $('.marker').addClass("animated flash");
+      $('aside #prompts').text("Please choose a marker");
+    } else if(!player1HasChosen && player2HasChosen) {
+      $player1Markers.addClass("animated flash");
+      $('#player-1 #prompts').text("Please choose a marker");
+    } else if(player1HasChosen && !player2HasChosen) {
+      $player2Markers.addClass("animated flash");
+      $('#player-2 #prompts').text("Please choose a marker");
+    } else {
+      // $('.marker').off('click');
+      $box = $(this);
+      const arrayNum = ($box.attr('id').slice(-1)) - 1; // get array number
+      makeTurn(arrayNum, turn, $box);
+    }
   }
 
   $('.boxes').on('click', getBox);
@@ -195,5 +229,12 @@ $(document).ready(function(){
       $('#player-1 h3#title1').text("Player 1");
       $('#player-2 h3#title2').text("Player 2");
       $('.boxes').on('click', getBox);
+      $('aside #prompts').hide();
+      $('#player-2 h3#title2').removeClass("animated flash");
+      $('#player-1 h3#title1').removeClass("animated flash");
+      $('.marker').removeClass("grayscale marker-selected");
+      player1HasChosen = false;
+      player2HasChosen = false;
+      // $('.marker').on('click');
     });
 });
