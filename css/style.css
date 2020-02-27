@@ -13,7 +13,7 @@ body{
   font-family: 'Open Sans', sans-serif;
   font-size: 15px;
 }
-h1, h3, button, .score, #reset{
+h1, h3, button, .score, #reset, #start{
   font-family: 'Vibur', cursive;
   text-align: center;
 }
@@ -52,6 +52,10 @@ aside h3, aside p, aside img {
 .grayscale{
   filter: grayscale(100%);
 }
+.active-player{
+  background-image: url('../img/background.jpeg');
+  background-size: cover;
+}
 #container {
    width: 300px;
    flex-grow: 1;
@@ -68,15 +72,26 @@ div.boxes {
   border-radius: 3px;
   justify-content: space-evenly;
 }
-#reset{
+div#buttons{
+  text-align:center;
+}
+#reset, #start{
   padding: 12px 28px;
   background-color: transparent;
   margin-top: 20px;
-  font-size: 40px;
-  color: #ffcaaf;
-  text-shadow: 2px 2px #2771B6;
+  font-size: 30px;
   border: none;
+  text-shadow: 2px 2px #2771B6;
+}
+#reset{
+  color: #ffcaaf;
 }
 #reset:hover{
+  color: #c9ade2;
+}
+#start{
   color: #c4eb52;
+}
+#start:hover{
+  color: #c9ade2;
 }

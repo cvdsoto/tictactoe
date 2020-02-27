@@ -16,22 +16,27 @@ $(document).ready(function(){
   let player1Src, player1Alt, player2Src, player2Alt;
   let getImageId, getImageSrc, getImageAlt;
   let score1 = 0, score2 = 0;
-  let player1HasChosen = false, player2HasChosen = false;
+  let player1HasChosen = false, player2HasChosen = false, hasGameStarted = false;
   let p1Icon, p2Icon;
 
   $player1Markers = $('#player-1 .marker');
   $player2Markers = $('#player-2 .marker');
 
   $player1Markers.click(function(){
+    $('.marker').removeClass("animated flash");
     player1Src = $(this).attr('src');
     if (player2HasChosen && player2Src === player1Src){
       $('#player-1 #prompts').text("Pick Another One!");
       player1Src = ' ';
-    }else if (player1HasChosen && player2HasChosen){
+    }else if (hasGameStarted){
       $('aside #prompts').text("Game ongoing! You cannot choose another marker!");
       $('aside #prompts').show();
       player1Src = p1Icon;
     }else {
+      if (player1HasChosen){
+        $player1Markers.removeClass('marker-selected');
+        $player2Markers.removeClass('grayscale');
+      }
       p1Icon = player1Src;
       player1Alt = $(this).attr('alt');
       $(this).addClass('marker-selected');
@@ -48,28 +53,57 @@ $(document).ready(function(){
   });
 
   $player2Markers.click(function(){
+    $('.marker').removeClass("animated flash");
     player2Src = $(this).attr('src');
     if (player1HasChosen && player1Src === player2Src){
       $('#player-2 #prompts').text("Pick Another One!");
       player2Src = ' ';
-    }else if (player1HasChosen && player2HasChosen){
+    }else if (hasGameStarted){
       $('aside #prompts').text("Game ongoing! You cannot choose another marker!");
       $('aside #prompts').show();
       player2Src = p2Icon;
     }else {
+      if (player2HasChosen){
+        $player2Markers.removeClass('marker-selected');
+        $player1Markers.removeClass('grayscale');
+      }
       p2Icon = player2Src;
       player2Alt = $(this).attr('alt');
       $(this).addClass('marker-selected');
+      let $p1CurrentIcon;
       for (let i = 0; i < $player1Markers.length; i++){
-        const $player1Image = $player1Markers.eq(i);
-        if(player2Src === $player1Image.attr('src')){
-          $player1Image.addClass('grayscale');
+        const $p1CurrentIcon = $player1Markers.eq(i);
+        if(player2Src === $p1CurrentIcon.attr('src')){
+          $p1CurrentIcon.addClass('grayscale');
         }
       }
       player2HasChosen = true;
       $('#player-2 #prompts').hide();
     }
   });
+
+  $('#start').on('click', function(){
+    if (!player1HasChosen && !player2HasChosen){
+      $('.marker').addClass("animated flash");
+      $('aside #prompts').text("Please choose a marker");
+    } else if(!player1HasChosen && player2HasChosen) {
+      $player1Markers.addClass("animated flash");
+      $('#player-1 #prompts').text("Please choose a marker");
+    } else if(player1HasChosen && !player2HasChosen) {
+      $player2Markers.addClass("animated flash");
+      $('#player-2 #prompts').text("Please choose a marker");
+    } else {
+      hasGameStarted = true;
+      const randomTurn = Math.floor(Math.random(1,4) * (4-1) + 1);
+      if(randomTurn === 1 || randomTurn === 2){
+        turn = 'X';
+        $('#player-1').addClass('active-player');
+      }else {
+        turn = 'O';
+        $('#player-2').addClass('active-player');
+      }
+    }
+});
 
   // $('.marker').click(function(){
   //   getImageSrc = $(this).attr('src');
@@ -101,7 +135,7 @@ $(document).ready(function(){
   // const $box8 = $('#box-8');
   // const $box9 = $('#box-9');
 
-  let turn = 'X'; // initial turn
+  let turn; // initial turn
   let winner = {};
 
   const checkWin = function(){
@@ -183,8 +217,12 @@ $(document).ready(function(){
       }else {
         if (turn === 'X'){
           turn = 'O';
+          $('#player-1').removeClass('active-player');
+          $('#player-2').addClass('active-player');
         }else {
           turn = 'X';
+          $('#player-2').removeClass('active-player');
+          $('#player-1').addClass('active-player');
         }
       }
       }
@@ -201,7 +239,7 @@ $(document).ready(function(){
     } else if(player1HasChosen && !player2HasChosen) {
       $player2Markers.addClass("animated flash");
       $('#player-2 #prompts').text("Please choose a marker");
-    } else {
+    } else if (hasGameStarted) {
       // $('.marker').off('click');
       $box = $(this);
       const arrayNum = ($box.attr('id').slice(-1)) - 1; // get array number
@@ -239,9 +277,13 @@ $(document).ready(function(){
       $('aside #prompts').show();
       $('#player-2 h3#title2').removeClass("animated flash");
       $('#player-1 h3#title1').removeClass("animated flash");
+      $('#player-1').removeClass('active-player');
+      $('#player-2').removeClass('active-player');
       $('.marker').removeClass("grayscale marker-selected");
       player1HasChosen = false;
       player2HasChosen = false;
+      hasGameStarted = false;
       // $('.marker').on('click');
     });
+
 });
