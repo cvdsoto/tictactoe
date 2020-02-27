@@ -29,6 +29,7 @@ $(document).ready(function(){
       player1Src = ' ';
     }else if (player1HasChosen && player2HasChosen){
       $('aside #prompts').text("Game ongoing! You cannot choose another marker!");
+      $('aside #prompts').show();
       player1Src = p1Icon;
     }else {
       p1Icon = player1Src;
@@ -42,6 +43,7 @@ $(document).ready(function(){
         }
       }
       player1HasChosen = true;
+      $('#player-1 #prompts').hide();
     }
   });
 
@@ -52,6 +54,7 @@ $(document).ready(function(){
       player2Src = ' ';
     }else if (player1HasChosen && player2HasChosen){
       $('aside #prompts').text("Game ongoing! You cannot choose another marker!");
+      $('aside #prompts').show();
       player2Src = p2Icon;
     }else {
       p2Icon = player2Src;
@@ -64,6 +67,7 @@ $(document).ready(function(){
         }
       }
       player2HasChosen = true;
+      $('#player-2 #prompts').hide();
     }
   });
 
@@ -169,11 +173,13 @@ $(document).ready(function(){
           $('#player-2 p#player2-score').text(score2);
         }
         $('.boxes').off('click', getBox);
+        $('aside #prompts').text('Thanks for playing!');
       }else if (tilesPlayed === 9 && !wonGame){
         $('#player-1 h3#title1').addClass("animated flash");
         $('#player-2 h3#title2').addClass("animated flash");
         $('#player-1 h3#title1').text(`Nobody wins!!`);
         $('#player-2 h3#title2').text(`Nobody wins!!`);
+        $('aside #prompts').text('Thanks for playing!');
       }else {
         if (turn === 'X'){
           turn = 'O';
@@ -229,7 +235,8 @@ $(document).ready(function(){
       $('#player-1 h3#title1').text("Player 1");
       $('#player-2 h3#title2').text("Player 2");
       $('.boxes').on('click', getBox);
-      $('aside #prompts').hide();
+      $('aside #prompts').text("Please choose a marker");
+      $('aside #prompts').show();
       $('#player-2 h3#title2').removeClass("animated flash");
       $('#player-1 h3#title1').removeClass("animated flash");
       $('.marker').removeClass("grayscale marker-selected");
