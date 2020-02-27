@@ -6,10 +6,6 @@
 }
 body{
   background-color: #c3e2ff;
-  /* background-image: url("../img/background.jpeg");
-  background-size: 100%; */
-  background-image: url("../img/bg.png");
-  background-size: 80%;
   font-family: 'Open Sans', sans-serif;
   font-size: 15px;
 }
@@ -52,14 +48,24 @@ aside h3, aside p, aside img {
 .grayscale{
   filter: grayscale(100%);
 }
-.active-player{
-  background-image: url('../img/background.jpeg');
-  background-size: cover;
+.active-player-Irene{
+  background-color: #fe5c50;
+}
+.active-player-Joy{
+  background-color: #8fd157;
+}
+.active-player-Seulgi{
+  background-color: #fede1d;
+}
+.active-player-Wendy{
+  background-color: #3ea6fd;
+}
+.active-player-Yeri{
+  background-color: #ac67c7;
 }
 #container {
    width: 300px;
    flex-grow: 1;
-   /* background-color: white; */
 }
 div.row{
   display: flex;
