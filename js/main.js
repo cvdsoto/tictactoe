@@ -1,5 +1,5 @@
+//declare board game and winning combinations
 let grid = ["_","_","_","_","_","_","_","_","_"];
-let indices = [];
 const winningCombo = [
   [0, 1, 2],
   [3, 4, 5],
@@ -12,29 +12,48 @@ const winningCombo = [
 ];
 
 $(document).ready(function(){
-
+  //declare variables
   let player1Src, player1Alt, player2Src, player2Alt;
   let getImageId, getImageSrc, getImageAlt;
   let score1 = 0, score2 = 0;
   let player1HasChosen = false, player2HasChosen = false, hasGameStarted = false;
   let p1Icon, p2Icon;
   let turn;
-  let winner = {};
+  let player = ' ';
+  let tilesPlayed = 0;
 
+  //declare jQuery Tags
   $player1Markers = $('#player-1 .marker');
   $player2Markers = $('#player-2 .marker');
+  $marker = $('.marker');
+  $player1Prompts = $('#player-1 #prompts');
+  $player2Prompts = $('#player-2 #prompts');
+  $asidePrompts = $('aside #prompts');
+  $start = $('#start');
+  $player1 = $('#player-1');
+  $player2 = $('#player-2');
+  $h3Title1 = $('#player-1 h3#title1');
+  $h3Title2 = $('#player-2 h3#title2');
+  $player1Score = $('#player-1 p#player1-score');
+  $player2Score = $('#player-2 p#player2-score');
+  $boxes = $('.boxes');
+  $reset = $('#reset');
 
+  //choose token to play for Player 1
   $player1Markers.click(function(){
-    $('.marker').removeClass("animated flash");
+    $marker.removeClass("animated flash");
     player1Src = $(this).attr('src');
+    //checks if the token was already taken by player 2
     if (player2HasChosen && player2Src === player1Src){
-      $('#player-1 #prompts').text("Pick Another One!");
+      $player1Prompts.text("Pick Another One!");
       player1Src = ' ';
+    //checks if a game has already started
     }else if (hasGameStarted){
-      $('aside #prompts').text("Game ongoing! You cannot choose another marker!");
-      $('aside #prompts').show();
+      $asidePrompts.text("Game ongoing! You cannot choose another marker!");
+      $asidePrompts.show();
       player1Src = p1Icon;
     }else {
+      // can choose another token
       if (player1HasChosen){
         $player1Markers.removeClass('marker-selected');
         $player2Markers.removeClass('grayscale');
@@ -49,21 +68,25 @@ $(document).ready(function(){
         }
       }
       player1HasChosen = true;
-      $('#player-1 #prompts').hide();
+      $player1Prompts.hide();
     }
   });
 
+  //choose token to play for Player 2
   $player2Markers.click(function(){
-    $('.marker').removeClass("animated flash");
+    $marker.removeClass("animated flash");
     player2Src = $(this).attr('src');
+    //checks if the token was already taken by player 2
     if (player1HasChosen && player1Src === player2Src){
-      $('#player-2 #prompts').text("Pick Another One!");
+      $player2Prompts.text("Pick Another One!");
       player2Src = ' ';
+    //checks if a game has already started
     }else if (hasGameStarted){
-      $('aside #prompts').text("Game ongoing! You cannot choose another marker!");
-      $('aside #prompts').show();
+      $asidePrompts.text("Game ongoing! You cannot choose another marker!");
+      $asidePrompts.show();
       player2Src = p2Icon;
     }else {
+      // can choose another token
       if (player2HasChosen){
         $player2Markers.removeClass('marker-selected');
         $player1Markers.removeClass('grayscale');
@@ -79,33 +102,37 @@ $(document).ready(function(){
         }
       }
       player2HasChosen = true;
-      $('#player-2 #prompts').hide();
+      $player2Prompts.hide();
     }
   });
 
-  $('#start').on('click', function(){
+  //click to start game to determine who will go first
+  $start.on('click', function(){
+    //checks if players have markers
     if (!player1HasChosen && !player2HasChosen){
-      $('.marker').addClass("animated flash");
-      $('aside #prompts').text("Please choose a marker");
+      $marker.addClass("animated flash");
+      $asidePrompts.text("Please choose a marker");
     } else if(!player1HasChosen && player2HasChosen) {
       $player1Markers.addClass("animated flash");
-      $('#player-1 #prompts').text("Please choose a marker");
+      $player1Prompts.text("Please choose a marker");
     } else if(player1HasChosen && !player2HasChosen) {
       $player2Markers.addClass("animated flash");
-      $('#player-2 #prompts').text("Please choose a marker");
+      $player2Prompts.text("Please choose a marker");
     } else {
       hasGameStarted = true;
+      //generate random number to determine who will play first
       const randomTurn = Math.floor(Math.random(1,4) * (4-1) + 1);
       if(randomTurn === 1 || randomTurn === 2){
         turn = 'X';
-        $('#player-1').addClass(`active-player-${player1Alt}`);
+        $player1.addClass(`active-player-${player1Alt}`);
       }else {
         turn = 'O';
-        $('#player-2').addClass(`active-player-${player2Alt}`);
+        $player2.addClass(`active-player-${player2Alt}`);
       }
     }
   });
 
+  //checks the main board if there's a winner based on the winning combinations
   const checkWin = function(){
   let a, b, c;
   for (let i = 0; i < winningCombo.length; i++) {
@@ -119,8 +146,7 @@ $(document).ready(function(){
     }
   };
 
-  let player = ' ';
-  let tilesPlayed = 0;
+  //checks and display images on the board and calls checkWin function
   const makeTurn = function(num, letter, box){
     if (grid[num] === '_' || grid[num] === letter){
       grid[num] = letter;
@@ -131,79 +157,84 @@ $(document).ready(function(){
         box.html(`<img src=${player2Src}>`);
       }
       const wonGame = checkWin();
+      // counts number of tiles played
       tilesPlayed += 1;
       if (wonGame){
+        //to display winner on Player 1 side
         if (turn === 'X'){
           player = player1Alt;
           score1 += 1;
-          $('#player-1 h3#title1').addClass("animated flash");
-          $('#player-1 h3#title1').text(`${player} wins!!`);
-          $('#player-1 p#player1-score').text(score1);
+          $h3Title1.addClass("animated flash");
+          $h3Title1.text(`${player} wins!!`);
+          $player1Score.text(score1);
+        //to display winner on Player 2 side
         }else {
           player = player2Alt;
           score2 += 1;
-          $('#player-2 h3#title2').addClass("animated flash");
-          $('#player-2 h3#title2').text(`${player} wins!!`);
-          $('#player-2 p#player2-score').text(score2);
+          $h3Title2.addClass("animated flash");
+          $h3Title2.text(`${player} wins!!`);
+          $player2Score.text(score2);
         }
-        $('.boxes').off('click', getBox);
-        $('aside #prompts').text('Thanks for playing!');
+        // no clicking on board if there's a winner
+        $boxes.off('click', getBox);
+        $asidePrompts.text('Thanks for playing!');
+        //draw
       }else if (tilesPlayed === 9 && !wonGame){
-        $('#player-1 h3#title1').addClass("animated flash");
-        $('#player-2 h3#title2').addClass("animated flash");
-        $('#player-1 h3#title1').text(`Nobody wins!!`);
-        $('#player-2 h3#title2').text(`Nobody wins!!`);
-        $('aside #prompts').text('Thanks for playing!');
+        $h3Title1.addClass("animated flash");
+        $h3Title2.addClass("animated flash");
+        $h3Title1.text(`Nobody wins!!`);
+        $h3Title2.text(`Nobody wins!!`);
+        $asidePrompts.text('Thanks for playing!');
+        //next turn
       }else {
         if (turn === 'X'){
           turn = 'O';
-          $('#player-1').removeClass(`active-player-${player1Alt}`);
-          $('#player-2').addClass(`active-player-${player2Alt}`);
+          $player1.removeClass(`active-player-${player1Alt}`);
+          $player2.addClass(`active-player-${player2Alt}`);
         }else {
           turn = 'X';
-          $('#player-2').removeClass(`active-player-${player2Alt}`);
-          $('#player-1').addClass(`active-player-${player1Alt}`);
+          $player2.removeClass(`active-player-${player2Alt}`);
+          $player1.addClass(`active-player-${player1Alt}`);
         }
       }
     }
   };
 
-
+  //get div box number
   const getBox = function(){
     if (!player1HasChosen && !player2HasChosen){
-      $('.marker').addClass("animated flash");
-      $('aside #prompts').text("Please choose a marker");
+      $marker.addClass("animated flash");
+      $asidePrompts.text("Please choose a marker");
     } else if(!player1HasChosen && player2HasChosen) {
       $player1Markers.addClass("animated flash");
-      $('#player-1 #prompts').text("Please choose a marker");
+      $player1Prompts.text("Please choose a marker");
     } else if(player1HasChosen && !player2HasChosen) {
       $player2Markers.addClass("animated flash");
-      $('#player-2 #prompts').text("Please choose a marker");
+      $player2Prompts.text("Please choose a marker");
     } else if (hasGameStarted) {
-      // $('.marker').off('click');
       $box = $(this);
       const arrayNum = ($box.attr('id').slice(-1)) - 1;
       makeTurn(arrayNum, turn, $box);
     }
   }
 
-  $('.boxes').on('click', getBox);
+  $boxes.on('click', getBox);
 
-  $('#reset').on('click', function(){
+  //resets the board game
+  $reset.on('click', function(){
     $('.boxes img').remove();
-    turn = 'X';
     grid = ["_","_","_","_","_","_","_","_","_"];
     tilesPlayed = 0;
-    $('#player-1 h3#title1').text("Player 1");
-    $('#player-2 h3#title2').text("Player 2");
-    $('.boxes').on('click', getBox);
-    $('aside #prompts').text("Please choose a marker");
-    $('aside #prompts').show();
-    $('#player-2 h3#title2').removeClass("animated flash");
-    $('#player-1 h3#title1').removeClass("animated flash");
-    $('#player-1').removeClass(`active-player-${player1Alt}`);
-    $('#player-2').removeClass(`active-player-${player2Alt}`);
-    $('.marker').removeClass("grayscale marker-selected");
+    $h3Title1.text("Player 1");
+    $h3Title2.text("Player 2");
+    $boxes.on('click', getBox);
+    $asidePrompts.text("Please choose a marker");
+    $asidePrompts.show();
+    $h3Title2.removeClass("animated flash");
+    $h3Title1.removeClass("animated flash");
+    $player1.removeClass(`active-player-${player1Alt}`);
+    $player2.removeClass(`active-player-${player2Alt}`);
+    $marker.removeClass("grayscale marker-selected");
     player1HasChosen = false;
     player2HasChosen = false;
     hasGameStarted = false;
