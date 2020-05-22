@@ -16,7 +16,9 @@ $(document).ready(function(){
   let player1Src, player1Alt, player2Src, player2Alt;
   let getImageId, getImageSrc, getImageAlt;
   let score1 = 0, score2 = 0;
-  let player1HasChosen = false, player2HasChosen = false, hasGameStarted = false;
+  let player1HasChosen = false,
+      player2HasChosen = false,
+      hasGameStarted = false;
   let p1Icon, p2Icon;
   let turn;
   let player = ' ';
@@ -39,6 +41,9 @@ $(document).ready(function(){
   $boxes = $('.boxes');
   $reset = $('#reset');
 
+  //hide reset
+  $reset.hide();
+
   //choose token to play for Player 1
   $player1Markers.click(function(){
     $marker.removeClass("animated flash");
@@ -49,7 +54,7 @@ $(document).ready(function(){
       player1Src = ' ';
     //checks if a game has already started
     }else if (hasGameStarted){
-      $asidePrompts.text("Game ongoing! You cannot choose another marker!");
+      $asidePrompts.text("Game ongoing! You cannot choose another token!");
       $asidePrompts.show();
       player1Src = p1Icon;
     }else {
@@ -82,7 +87,7 @@ $(document).ready(function(){
       player2Src = ' ';
     //checks if a game has already started
     }else if (hasGameStarted){
-      $asidePrompts.text("Game ongoing! You cannot choose another marker!");
+      $asidePrompts.text("Game ongoing! You cannot choose another token!");
       $asidePrompts.show();
       player2Src = p2Icon;
     }else {
@@ -111,13 +116,13 @@ $(document).ready(function(){
     //checks if players have markers
     if (!player1HasChosen && !player2HasChosen){
       $marker.addClass("animated flash");
-      $asidePrompts.text("Please choose a marker");
+      $asidePrompts.text("Please choose a token");
     } else if(!player1HasChosen && player2HasChosen) {
       $player1Markers.addClass("animated flash");
-      $player1Prompts.text("Please choose a marker");
+      $player1Prompts.text("Please choose a token");
     } else if(player1HasChosen && !player2HasChosen) {
       $player2Markers.addClass("animated flash");
-      $player2Prompts.text("Please choose a marker");
+      $player2Prompts.text("Please choose a token");
     } else {
       hasGameStarted = true;
       //generate random number to determine who will play first
@@ -178,6 +183,9 @@ $(document).ready(function(){
         // no clicking on board if there's a winner
         $boxes.off('click', getBox);
         $asidePrompts.text('Thanks for playing!');
+        $asidePrompts.show();
+        $reset.show();
+        $start.hide();
         //draw
       }else if (tilesPlayed === 9 && !wonGame){
         $h3Title1.addClass("animated flash");
@@ -185,8 +193,11 @@ $(document).ready(function(){
         $h3Title1.text(`Nobody wins!!`);
         $h3Title2.text(`Nobody wins!!`);
         $asidePrompts.text('Thanks for playing!');
+        $asidePrompts.show();
         $player1.removeClass(`active-player-${player1Alt}`);
         $player2.removeClass(`active-player-${player2Alt}`);
+        $reset.show();
+        $start.hide();
         //next turn
       }else {
         if (turn === 'X'){
@@ -206,13 +217,13 @@ $(document).ready(function(){
   const getBox = function(){
     if (!player1HasChosen && !player2HasChosen){
       $marker.addClass("animated flash");
-      $asidePrompts.text("Please choose a marker");
+      $asidePrompts.text("Please choose a token");
     } else if(!player1HasChosen && player2HasChosen) {
       $player1Markers.addClass("animated flash");
-      $player1Prompts.text("Please choose a marker");
+      $player1Prompts.text("Please choose a token");
     } else if(player1HasChosen && !player2HasChosen) {
       $player2Markers.addClass("animated flash");
-      $player2Prompts.text("Please choose a marker");
+      $player2Prompts.text("Please choose a token");
     } else if (hasGameStarted) {
       $box = $(this);
       const arrayNum = ($box.attr('id').slice(-1)) - 1;
@@ -230,7 +241,7 @@ $(document).ready(function(){
     $h3Title1.text("Player 1");
     $h3Title2.text("Player 2");
     $boxes.on('click', getBox);
-    $asidePrompts.text("Please choose a marker");
+    $asidePrompts.text("Please choose a token");
     $asidePrompts.show();
     $h3Title2.removeClass("animated flash");
     $h3Title1.removeClass("animated flash");
@@ -240,6 +251,8 @@ $(document).ready(function(){
     player1HasChosen = false;
     player2HasChosen = false;
     hasGameStarted = false;
+    $reset.hide();
+    $start.show();
   });
 
 });
