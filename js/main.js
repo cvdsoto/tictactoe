@@ -36,8 +36,8 @@ $(document).ready(function(){
   $player2 = $('#player-2');
   $h3Title1 = $('#player-1 h3#title1');
   $h3Title2 = $('#player-2 h3#title2');
-  $player1Score = $('#player-1 p#player1-score');
-  $player2Score = $('#player-2 p#player2-score');
+  $player1Score = $('#player-1 span#player1-score');
+  $player2Score = $('#player-2 span#player2-score');
   $boxes = $('.boxes');
   $reset = $('#reset');
 

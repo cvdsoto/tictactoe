@@ -58,6 +58,10 @@ aside h3, aside p {
   width: 100%;
 }
 
+aside p {
+  margin-left: .5em;
+}
+
 aside img {
   width: 18%;
   margin: 1em .25em;
@@ -116,7 +120,7 @@ div.boxes {
   width: 100px;
   height: 100px;
   border-radius: 3px;
-  justify-content: space-evenly;
+  justify-content: space-between;
 }
 
 /* buttons */
@@ -143,4 +147,43 @@ div#buttons{
 
 #start:hover{
   color: #c4eb52;
+}
+
+@media (min-width: 960px) {
+  #wrapper {
+    max-width: 1024px;
+    flex-direction: row;
+  }
+
+  #player-1 {
+    order: 0;
+  }
+
+  aside, #container {
+    width: 30%;
+    margin: 1em;
+  }
+
+  aside img {
+    width: 40%;
+    margin: .4em;
+  }
+}
+
+@media (min-width: 1024px) {
+  #wrapper {
+    max-width: 1200px;
+  }
+
+  aside img {
+    width: 40%;
+    margin: .3em
+  }
+}
+
+@media (min-width: 1200px) {
+  aside img {
+    width: 30%;
+    margin: .3em
+  }
 }
