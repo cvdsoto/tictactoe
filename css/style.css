@@ -116,10 +116,13 @@ div.row{
 }
 
 div.boxes {
-  border: 1px solid black;
+  /* border: 1px solid black; */
   width: 100px;
   height: 100px;
   border-radius: 3px;
+  margin: .3em;
+  background-color: white;
+  /* box-shadow: 5px 8px #222; */
   justify-content: space-between;
 }
 
@@ -146,7 +149,7 @@ div#buttons{
 }
 
 #start:hover{
-  color: #c4eb52;
+  color: #FCEC3C;
 }
 
 @media (min-width: 960px) {
