@@ -18,7 +18,7 @@ This game was made by using HTML, CSS, and JavaScript (jQuery).
 5. Refresh the board to start a new round.
 
 ### Known Bugs
-- ~~Clicking the "Start Button" while a game is ongoing will restart the players' turn.~~ ** fixed! yay! **
+- ~~Clicking the "Start Button" while a game is ongoing will restart the players' turn.~~ **fixed! yay!**
 - When the game is a draw, the last player's background is still highlighted.
 
 ### Wish List
