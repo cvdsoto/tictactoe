@@ -119,7 +119,7 @@ $(document).ready(function(){
   $start.on('click', function(){
     //checks if players have markers
     const playersHaveMarkers = checkPlayersHaveMarkers();
-    if (playersHaveMarkers) {
+    if (playersHaveMarkers && !hasGameStarted) {
       hasGameStarted = true;
       //generate random number to determine who will play first
       const randomTurn = Math.floor(Math.random(1,4) * (4-1) + 1);
