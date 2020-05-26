@@ -44,43 +44,78 @@ $(document).ready(function(){
   //hide reset
   $reset.hide();
 
+  const assignToken = function (thisImageId, otherImageId, $playerPrompts, $player1Markers, $player2Markers, playerHasChosen) {
+    let playerSrc, playerAlt;
+    const $otherImage = $(`#icon-${otherImageId}`);
+    const $thisImage = $(`#icon-${thisImageId}`);
+
+    getImageClass = $otherImage.attr('class');
+    if (getImageClass.includes('marker-selected')) {
+      $playerPrompts.text("Pick Another One!");
+    } else {
+      if (playerHasChosen){
+        $player1Markers.removeClass('marker-selected');
+        $player2Markers.removeClass('grayscale');
+      }
+        playerSrc = $thisImage.attr('src');
+        playerAlt = $thisImage.attr('alt');
+        $thisImage.addClass('marker-selected');
+        $otherImage.addClass('grayscale');
+        playerHasChosen = true;
+        $playerPrompts.text("");
+    }
+    return [playerSrc, playerAlt, playerHasChosen];
+  }
+
   const getToken = function () {
-    getImageId = parseInt($(this).attr('id').slice(-1));
+    getImageId = parseInt($(this).attr('id').slice(5));
 
     if (hasGameStarted) {
       $asidePrompts.text("Game ongoing! You cannot choose another token!");
       $asidePrompts.show();
     } else {
       if (getImageId >= 1 && getImageId <= 5) {
-        getImageClass = $(`#icon-${getImageId + 5}`).attr('class');
-        if (getImageClass.includes('marker-selected')) {
-          $player1Prompts.text("Pick Another One!");
-        } else {
-          if (player1HasChosen){
-            $player1Markers.removeClass('marker-selected');
-            $player2Markers.removeClass('grayscale');
-          }
-            player1Src = $(this).attr('src');
-            player1Alt = $(this).attr('alt');
-            $(this).addClass('marker-selected');
-            $(`#icon-${getImageId + 5}`).addClass('grayscale');
-            player1HasChosen = true;
-        }
+        const nextImageId = getImageId + 5;
+        const token = assignToken(getImageId, nextImageId, $player1Prompts, $player1Markers, $player2Markers, player1HasChosen);
+        player1Src = token[0]
+        player1Alt = token[1]
+        player1HasChosen = token[2];
+        // getImageClass = $(`#icon-${getImageId + 5}`).attr('class');
+        // if (getImageClass.includes('marker-selected')) {
+        //   $player1Prompts.text("Pick Another One!");
+        // } else {
+        //   if (player1HasChosen){
+        //     $player1Markers.removeClass('marker-selected');
+        //     $player2Markers.removeClass('grayscale');
+        //   }
+        //     player1Src = $(this).attr('src');
+        //     player1Alt = $(this).attr('alt');
+        //     $(this).addClass('marker-selected');
+        //     $(`#icon-${getImageId + 5}`).addClass('grayscale');
+        //     player1HasChosen = true;
+        //     $player1Prompts.text("");
+        // }
       } else {
-        getImageClass = $(`#icon-${getImageId - 5}`).attr('class');
-          if (getImageClass.includes('marker-selected')) {
-            $player2Prompts.text("Pick Another One!");
-          } else {
-            if (player2HasChosen){
-              $player2Markers.removeClass('marker-selected');
-              $player1Markers.removeClass('grayscale');
-            }
-              player2Src = $(this).attr('src');
-              player2Alt = $(this).attr('alt');
-              $(this).addClass('marker-selected');
-              $(`#icon-${getImageId - 5}`).addClass('grayscale');
-              player2HasChosen = true;
-          }
+        const nextImageId = getImageId - 5;
+        const token = assignToken(getImageId, nextImageId, $player2Prompts, $player2Markers, $player1Markers, player2HasChosen);
+        player2Src = token[0]
+        player2Alt = token[1]
+        player2HasChosen = token[2];
+        // getImageClass = $(`#icon-${getImageId - 5}`).attr('class');
+        //   if (getImageClass.includes('marker-selected')) {
+        //     $player2Prompts.text("Pick Another One!");
+        //   } else {
+        //     if (player2HasChosen){
+        //       $player2Markers.removeClass('marker-selected');
+        //       $player1Markers.removeClass('grayscale');
+        //     }
+        //       player2Src = $(this).attr('src');
+        //       player2Alt = $(this).attr('alt');
+        //       $(this).addClass('marker-selected');
+        //       $(`#icon-${getImageId - 5}`).addClass('grayscale');
+        //       player2HasChosen = true;
+        //       $player2Prompts.text("");
+        //   }
       }
     }
   }
