@@ -14,7 +14,7 @@ const winningCombo = [
 $(document).ready(function(){
   //declare variables
   let player1Src, player1Alt, player2Src, player2Alt;
-  let getImageId, getImageClass;
+  let getImageId, getOtherImageClass;
   let score1 = 0, score2 = 0;
   let player1HasChosen = false, player2HasChosen = false, hasGameStarted = false;
   let turn;
@@ -40,19 +40,23 @@ $(document).ready(function(){
   //hide reset
   $reset.hide();
 
+  // assigning token/marker on correct player
   const assignToken = function (thisImageId, otherImageId, $playerPrompts, $player1Markers, $player2Markers, playerHasChosen) {
     let playerSrc, playerAlt;
-    const $otherImage = $(`#icon-${otherImageId}`);
+    const $otherImage = $(`#icon-${otherImageId}`); // opponent's Image ID
     const $thisImage = $(`#icon-${thisImageId}`);
 
-    getImageClass = $otherImage.attr('class');
-    if (getImageClass.includes('marker-selected')) {
+    //get same image on the opponent's side and check if it's already chosen by looking if the class "marker-selected" is already assigned to the opponent's image
+    getOtherImageClass = $otherImage.attr('class');
+    if (getOtherImageClass.includes('marker-selected')) {
       $playerPrompts.text("Pick Another One!");
     } else {
+      // checks if the player has already selected a token so it can remove the grayscale class on opponent's side and marker-selected class on the player's side
       if (playerHasChosen){
         $player1Markers.removeClass('marker-selected');
         $player2Markers.removeClass('grayscale');
       }
+      // assign the image src and alt, add the classes accordingly, and indicate that the player has already chosen a token
         playerSrc = $thisImage.attr('src');
         playerAlt = $thisImage.attr('alt');
         $thisImage.addClass('marker-selected');
@@ -63,22 +67,26 @@ $(document).ready(function(){
     return [playerSrc, playerAlt, playerHasChosen];
   }
 
+  // checking which player should the token be assigned
   const getToken = function () {
     getImageId = parseInt($(this).attr('id').slice(5));
-
+    $marker.removeClass("animated flash");
+    // checks if a game is ongoing. A player cannot choose another token while playing
     if (hasGameStarted) {
       $asidePrompts.text("Game ongoing! You cannot choose another token!");
       $asidePrompts.show();
     } else {
+      // if the image id is between 1-5, the token should be assigned to Player 1
       if (getImageId >= 1 && getImageId <= 5) {
-        const nextImageId = getImageId + 5;
-        const token = assignToken(getImageId, nextImageId, $player1Prompts, $player1Markers, $player2Markers, player1HasChosen);
+        const opponentImageId = getImageId + 5; // opponent's Image ID
+        const token = assignToken(getImageId, opponentImageId, $player1Prompts, $player1Markers, $player2Markers, player1HasChosen);
         player1Src = token[0]
         player1Alt = token[1]
         player1HasChosen = token[2];
       } else {
-        const nextImageId = getImageId - 5;
-        const token = assignToken(getImageId, nextImageId, $player2Prompts, $player2Markers, $player1Markers, player2HasChosen);
+        // if the image is more than 5, the token should be assigned to Player 2
+        const opponentImageId = getImageId - 5; // opponent's Image ID
+        const token = assignToken(getImageId, opponentImageId, $player2Prompts, $player2Markers, $player1Markers, player2HasChosen);
         player2Src = token[0]
         player2Alt = token[1]
         player2HasChosen = token[2];
@@ -88,19 +96,30 @@ $(document).ready(function(){
 
   $marker.click(getToken);
 
-  //click to start game to determine who will go first
-  $start.on('click', function(){
-    //checks if players have markers
+  // checks if the players have chosen their markers
+  const checkPlayersHaveMarkers = function () {
+    let result = true;
     if (!player1HasChosen && !player2HasChosen){
       $marker.addClass("animated flash");
       $asidePrompts.text("Please choose a token");
+      result = false;
     } else if(!player1HasChosen && player2HasChosen) {
       $player1Markers.addClass("animated flash");
       $player1Prompts.text("Please choose a token");
+      result = false;
     } else if(player1HasChosen && !player2HasChosen) {
       $player2Markers.addClass("animated flash");
       $player2Prompts.text("Please choose a token");
-    } else {
+      result = false;
+    }
+    return result;
+  }
+
+  //click to start game to determine who will go first
+  $start.on('click', function(){
+    //checks if players have markers
+    const playersHaveMarkers = checkPlayersHaveMarkers();
+    if (playersHaveMarkers) {
       hasGameStarted = true;
       //generate random number to determine who will play first
       const randomTurn = Math.floor(Math.random(1,4) * (4-1) + 1);
@@ -161,8 +180,8 @@ $(document).ready(function(){
         $asidePrompts.show();
         $reset.show();
         $start.hide();
-        //draw
-      }else if (tilesPlayed === 9 && !wonGame){
+        // draw
+      } else if (tilesPlayed === 9 && !wonGame){
         $h3Title1.addClass("animated flash");
         $h3Title2.addClass("animated flash");
         $h3Title1.text(`Nobody wins!!`);
@@ -173,8 +192,8 @@ $(document).ready(function(){
         $player2.removeClass(`active-player-${player2Alt}`);
         $reset.show();
         $start.hide();
-        //next turn
-      }else {
+      //next turn
+      } else {
         if (turn === 'X'){
           turn = 'O';
           $player1.removeClass(`active-player-${player1Alt}`);
@@ -190,16 +209,8 @@ $(document).ready(function(){
 
   //get div box number
   const getBox = function(){
-    if (!player1HasChosen && !player2HasChosen){
-      $marker.addClass("animated flash");
-      $asidePrompts.text("Please choose a token");
-    } else if(!player1HasChosen && player2HasChosen) {
-      $player1Markers.addClass("animated flash");
-      $player1Prompts.text("Please choose a token");
-    } else if(player1HasChosen && !player2HasChosen) {
-      $player2Markers.addClass("animated flash");
-      $player2Prompts.text("Please choose a token");
-    } else if (hasGameStarted) {
+    const playersHaveMarkers = checkPlayersHaveMarkers();
+    if (playersHaveMarkers && hasGameStarted) {
       $box = $(this);
       const arrayNum = ($box.attr('id').slice(-1)) - 1;
       makeTurn(arrayNum, turn, $box);
