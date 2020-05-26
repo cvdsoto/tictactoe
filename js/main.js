@@ -14,14 +14,10 @@ const winningCombo = [
 $(document).ready(function(){
   //declare variables
   let player1Src, player1Alt, player2Src, player2Alt;
-  let getImageId, getImageSrc, getImageAlt, getImageClass;
+  let getImageId, getImageClass;
   let score1 = 0, score2 = 0;
-  let player1HasChosen = false,
-      player2HasChosen = false,
-      hasGameStarted = false;
-  let p1Icon, p2Icon;
+  let player1HasChosen = false, player2HasChosen = false, hasGameStarted = false;
   let turn;
-  let player = ' ';
   let tilesPlayed = 0;
 
   //declare jQuery Tags
@@ -80,114 +76,17 @@ $(document).ready(function(){
         player1Src = token[0]
         player1Alt = token[1]
         player1HasChosen = token[2];
-        // getImageClass = $(`#icon-${getImageId + 5}`).attr('class');
-        // if (getImageClass.includes('marker-selected')) {
-        //   $player1Prompts.text("Pick Another One!");
-        // } else {
-        //   if (player1HasChosen){
-        //     $player1Markers.removeClass('marker-selected');
-        //     $player2Markers.removeClass('grayscale');
-        //   }
-        //     player1Src = $(this).attr('src');
-        //     player1Alt = $(this).attr('alt');
-        //     $(this).addClass('marker-selected');
-        //     $(`#icon-${getImageId + 5}`).addClass('grayscale');
-        //     player1HasChosen = true;
-        //     $player1Prompts.text("");
-        // }
       } else {
         const nextImageId = getImageId - 5;
         const token = assignToken(getImageId, nextImageId, $player2Prompts, $player2Markers, $player1Markers, player2HasChosen);
         player2Src = token[0]
         player2Alt = token[1]
         player2HasChosen = token[2];
-        // getImageClass = $(`#icon-${getImageId - 5}`).attr('class');
-        //   if (getImageClass.includes('marker-selected')) {
-        //     $player2Prompts.text("Pick Another One!");
-        //   } else {
-        //     if (player2HasChosen){
-        //       $player2Markers.removeClass('marker-selected');
-        //       $player1Markers.removeClass('grayscale');
-        //     }
-        //       player2Src = $(this).attr('src');
-        //       player2Alt = $(this).attr('alt');
-        //       $(this).addClass('marker-selected');
-        //       $(`#icon-${getImageId - 5}`).addClass('grayscale');
-        //       player2HasChosen = true;
-        //       $player2Prompts.text("");
-        //   }
       }
     }
   }
 
   $marker.click(getToken);
-
-  // //choose token to play for Player 1
-  // $player1Markers.click(function(){
-  //   $marker.removeClass("animated flash");
-  //   player1Src = $(this).attr('src');
-  //   //checks if the token was already taken by player 2
-  //   if (player2HasChosen && player2Src === player1Src){
-  //     $player1Prompts.text("Pick Another One!");
-  //     player1Src = ' ';
-  //   //checks if a game has already started
-  //   }else if (hasGameStarted){
-  //     $asidePrompts.text("Game ongoing! You cannot choose another token!");
-  //     $asidePrompts.show();
-  //     player1Src = p1Icon;
-  //   }else {
-  //     // can choose another token
-  //     if (player1HasChosen){
-  //       $player1Markers.removeClass('marker-selected');
-  //       $player2Markers.removeClass('grayscale');
-  //     }
-  //     p1Icon = player1Src;
-  //     player1Alt = $(this).attr('alt');
-  //     $(this).addClass('marker-selected');
-  //     for (let i = 0; i < $player2Markers.length; i++){
-  //       const $player2Image = $player2Markers.eq(i);
-  //       if(player1Src === $player2Image.attr('src')){
-  //         $player2Image.addClass('grayscale');
-  //       }
-  //     }
-  //     player1HasChosen = true;
-  //     $player1Prompts.hide();
-  //   }
-  // });
-  //
-  // //choose token to play for Player 2
-  // $player2Markers.click(function(){
-  //   $marker.removeClass("animated flash");
-  //   player2Src = $(this).attr('src');
-  //   //checks if the token was already taken by player 2
-  //   if (player1HasChosen && player1Src === player2Src){
-  //     $player2Prompts.text("Pick Another One!");
-  //     player2Src = ' ';
-  //   //checks if a game has already started
-  //   }else if (hasGameStarted){
-  //     $asidePrompts.text("Game ongoing! You cannot choose another token!");
-  //     $asidePrompts.show();
-  //     player2Src = p2Icon;
-  //   }else {
-  //     // can choose another token
-  //     if (player2HasChosen){
-  //       $player2Markers.removeClass('marker-selected');
-  //       $player1Markers.removeClass('grayscale');
-  //     }
-  //     p2Icon = player2Src;
-  //     player2Alt = $(this).attr('alt');
-  //     $(this).addClass('marker-selected');
-  //     let $p1CurrentIcon;
-  //     for (let i = 0; i < $player1Markers.length; i++){
-  //       const $p1CurrentIcon = $player1Markers.eq(i);
-  //       if(player2Src === $p1CurrentIcon.attr('src')){
-  //         $p1CurrentIcon.addClass('grayscale');
-  //       }
-  //     }
-  //     player2HasChosen = true;
-  //     $player2Prompts.hide();
-  //   }
-  // });
 
   //click to start game to determine who will go first
   $start.on('click', function(){
@@ -245,17 +144,15 @@ $(document).ready(function(){
       if (wonGame){
         //to display winner on Player 1 side
         if (turn === 'X'){
-          player = player1Alt;
           score1 += 1;
           $h3Title1.addClass("animated flash");
-          $h3Title1.text(`${player} wins!!`);
+          $h3Title1.text(`${player1Alt} wins!!`);
           $player1Score.text(score1);
         //to display winner on Player 2 side
         }else {
-          player = player2Alt;
           score2 += 1;
           $h3Title2.addClass("animated flash");
-          $h3Title2.text(`${player} wins!!`);
+          $h3Title2.text(`${player2Alt} wins!!`);
           $player2Score.text(score2);
         }
         // no clicking on board if there's a winner
